@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <script src="./node_modules/axios/dist/axios.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+<style>
+
+  .imge{
+    height: 700px;
+    max-width: 950px;
+    text-align: center;
+    display: block;
+    margin: auto;
+  }
+
+</style>
+<body>
+
+   <!-----------------------------------------------------------------------------NAVGATION----------------------------------------------------------------------->
+   <div class="nav container bg-light mt-1 shadow-sm col-8 mt-2 p-2">
+    <div class="list">
+      <ul class="d-flex " style="list-style:none ;">
+        <li class="mx-1 text-secondary"style="cursor: pointer;" onclick="redirecedhome()">home</li>
+        <li class="mx-1 text-secondary">profile</li>
+        <li class="mx-1 text-secondary">content</li>
+      </ul>
+    </div>
+
+
+    <div class="button-login">
+      <button class="btn btn-outline-danger mx-1" id="Resigter-btn" onclick="openmodelregister()">Resigter</button>
+      <button class="btn btn-outline-warning" id="login-btn">login</button>
+    </div>
+
+
+    <!-----------------------------------------------------------------------------LOGOUT--------------------------------------------------------------------->
+    <div class="logout align-items-center" id="logout-btn">
+      <img src="" alt="" style="width:50px;height:50px" id="image">
+      <b id="title"></b>
+      <button onclick="showlogout()" class="btn btn-outline-danger">logout</button>
+
+    </div>
+
+    <!-----------------------------------------------------------------------------/LOGOUT/--------------------------------------------------------------------->
+
+   </div>
+  <!-----------------------------------------------------------------------------/NAVGATION/--------------------------------------------------------------------->
+
+
+
+  <!-----------------------------------------------------------------------------POP-REGISTER--------------------------------------------------------------------->
+  <div class="poppop-2 bg-primary-subtle p-3 rounded" id="pop-register" style="display: none;">
+    <div class="icons d-flex justify-content-between ">
+      <h2>REGISTER</h2>
+      <i class="fa-solid fa-xmark close" style="font-size:20px;font-weight:bold;"></i>
+    </div>
+    <hr>
+    <p>name</p>
+    <input type="email" id="register-name" style="border: 0" />
+    <p>username</p>
+    <input type="email" id="register-username" style="border: 0" />
+    <p>password</p>
+    <input type="password" id="register-password" style="border: 0" />
+    <label style="display:block;">image</label>
+    <input type="file" id="register-image" style="display:block;">
+    <div class="btn-pop text-end">
+      <button class="btn btn-info">close</button>
+      <button class="btn btn-info" id='login-send' onclick="registerlogedclick()">REGISTER</button>
+    </div>
+  </div>
+  <!-----------------------------------------------------------------------------/POP-REGISTER/--------------------------------------------------------------------->
+
+
+
+    <!-----------------------------------------------------------------------------popop-LOGON--------------------------------------------------------------------->
+    <div class="poppop bg-primary-subtle p-3 rounded" id="pop-login" style="display:none ;">
+        <div class="icons d-flex justify-content-between ">
+          <h2>login</h2>
+          <i class="fa-solid fa-xmark close" style="font-size:20px;font-weight:bold;"></i>
+        </div>
+        <hr>
+        <p>username</p>
+        <input type="email" id="text-input" style="border: 0" value="yarob99" />
+        <p>password</p>
+        <input type="password" id="password-input" style="border: 0" value="123456" />
+        <div class="btn-pop text-end">
+          <button class="btn btn-info">close</button>
+          <button class="btn btn-info" id='login-send' onclick="clickbtnlogin()">login</button>
+        </div>
+      </div>
+      <!-----------------------------------------------------------------------------/popop-LOGIN/-------------------------------------------------------------------->
+    
+   <!------------------------------------------------------------------------------SHOWALEART----------------------------------------------------------------- -->
+   <div id="liveAlertPlaceholder"style=" position: fixed;bottom:40%;right:5%;height:30px;z-index: 999;"></div>
+   <!------------------------------------------------------------------------------/SHOWALEART/----------------------------------------------------------------- -->
+
+
+  <!------------------------------------------------------------------------------CONTENT-POST--------------------------------------------------------------------->
+   <div class="post-content container col-8 mt-5" id="center"></div>
+  <!------------------------------------------------------------------------------/CONTENT-POST/--------------------------------------------------------------------->
+
+
+
+  <!------------------------------------------------------------------------------CONTENT-comment--------------------------------------------------------------------->
+  <div class="content-comment container  col-8 mt-5"style="border:2px solid black" >
+    <div class="creat mb-4 mt-3" >
+    
+    </div>
+  </div>
+  <!------------------------------------------------------------------------------/CONTENT-comment/--------------------------------------------------------------------->
+
+
+  <!------------------------------------------------------------------------------/CREAT-comment/--------------------------------------------------------------------->
+  <div class="creat-comment container col-8 mt-2 ">
+<input type="text"style="width:100%"id="input-comment">
+<button class="mt-2 btn btn-outline-warning" onclick="btncommentclicked()">SEND</button>
+  </div>
+  <!------------------------------------------------------------------------------/CREAT-comment/--------------------------------------------------------------------->
+
+
+ </body>
+
+
+
+<script src="./main.js"></script>
+<script>
+
+
+
+
+//<===============================SETUPUI========================================>
+function setui(){
+  let buttonlogin=document.querySelector('.button-login')
+  let tokens=localStorage.getItem('token')
+
+  let user=localStorage.getItem('user')     //OBJECT
+  let stor=JSON.parse(user)
+  let title=document.getElementById('title')
+
+
+  
+  if(tokens==null){   // NO SIGNIN NO TOKEV
+    buttonlogin.style.display='block'
+    logoutbtn.style.display='none'
+
+  
+  }else{              // YES SIGNIN YES TOKEV
+    logoutbtn.style.display='block'
+    buttonlogin.style.display='none'
+
+    title.innerHTML=stor.username
+  
+
+  }
+}
+setui()
+//<===============================/SETUPUI/========================================>
+
+//<===============================GETCOMMENT========================================>
+function getcoment(){
+  let url=new URLSearchParams(window.location.search)
+  let geturl=url.get('postid')
+
+  fetch(`https://tarmeezacademy.com/api/v1/posts/${geturl}`)
+  .then(res=>res.json())
+  .then(data=>getcomments(data))
+ 
+}
+getcoment()
+
+function getcomments(data){
+  let center=document.getElementById('center')
+  let contentcomments=document.querySelector('.content-comment')
+  let resolved=data.data
+  let body=resolved.body
+   let comment=resolved.comments
+  let image=resolved.image
+  let author=resolved.author
+
+  comment.forEach(elements => {
+  let contentcomment=`
+<img src="${elements.author.profile_image}" style='height: 50px;width:50px'class="rounded-circle"style="text-align:left">
+<b>${elements.author.username}</b>
+<p>${elements.body}</p>
+`
+contentcomments.innerHTML+=contentcomment
+
+
+
+
+});
+
+
+ let content=`
+<div class="post pt-2 border px-2 " id="new-post"style="cursor:pointer;">
+    <div class="img-post">
+<img src="${author.profile_image}"  id="imge" class="rounded-circle"style=" width: 50px;height: 50px;" >
+      <span id="post-span">${author.name}</span>
+    </div>
+    <hr>
+    <img src="${image}" alt="" class="imge">
+    <p>hello</p>
+    <p>Hellow world</p>
+    <p>${resolved.created_at}</p>
+    <hr>
+    <i class="fa fa-pencil" aria-hidden="true"></i>
+    <span>hello</span>
+  </div>
+ 
+`
+center.innerHTML=content
+}
+//<===============================/GETCOMMENT/========================================>
+
+
+function redirecedhome(){
+window.location='index.html'
+
+}
+
+
+//<===============================CREAT-COMMENT========================================>
+
+
+function btncommentclicked(){
+let inputcomment=document.getElementById('input-comment').value
+
+let creat=document.querySelector('.creat')
+
+let tokens=localStorage.getItem('token')
+body={
+  "body": inputcomment
+}
+axios.post('https://tarmeezacademy.com/api/v1/posts/2/comments',body,{
+
+  headers:{
+    "Authorization": `Bearer ${tokens}`
+  }
+}).then(res=>{
+
+  localStorage.setItem('body',inputcomment)
+
+  let CONTENT_CREAT=
+`
+<div>
+<img src="th.jpg" alt="" style="height: 50px;width:50px"class="rounded-circle" id="imge-creat-comment">
+<b id="text-creat-comment">${inputcomment}</b>
+</div>
+`
+creat.innerHTML+=CONTENT_CREAT
+
+
+})
+
+
+
+
+
+}
+
+
+
+function getitem(){
+  let creat=document.querySelector('.creat')
+
+creat.innerHTML=localStorage.getItem('body')
+
+// let parse=localStorage.getItem('user')
+
+// let user=JSON.parse(parse)
+
+// document.getElementById('imge-creat-comment').src=user.profile_image 
+}
+
+getitem()
+
+
+
+
+//<===============================/CREAT-COMMENT/========================================>
+
+
+
+</script>

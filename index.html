@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <script src="./node_modules/axios/dist/axios.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+
+
+<style>
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    
+  }
+
+  ul li {
+    list-style: none;
+  }
+
+  .post {
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+  }
+
+  #imge {
+    width: 50px;
+    height: 50px;
+
+  }
+  .imge {
+
+    position: relative;
+    left: 0;
+    height: 300px;
+    width: 1000px;
+  }
+  .poppop {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    z-index: 200;
+    display: none;
+  }
+
+  .logout {
+    display: none;
+
+  }
+</style>
+
+
+<body>
+
+
+
+
+  <!-----------------------------------------------------------------------------NAVGATION----------------------------------------------------------------------->
+  <div class="nav container bg-light mt-1 shadow-sm col-8 mt-2 p-2">
+    <div class="list">
+      <ul class="d-flex ">
+        <li class="mx-1 text-secondary">home</li>
+        <li class="mx-1 text-secondary">profile</li>
+        <li class="mx-1 text-secondary">content</li>
+      </ul>
+    </div>
+
+
+    <div class="button-login">
+      <button class="btn btn-outline-danger mx-1" id="Resigter-btn" onclick="openmodelregister()">Resigter</button>
+      <button class="btn btn-outline-warning" id="login-btn">login</button>
+      <img src="" alt="" style="width:50px;height:50px" id="image">
+    </div>
+
+
+    <!-----------------------------------------------------------------------------LOGOUT--------------------------------------------------------------------->
+    <div class="logout align-items-center" id="logout-btn">
+      <!-- <img src="" alt="" style="width:50px;height:50px" id="image"> -->
+      <b id="title"></b>
+      <button onclick="showlogout()" class="btn btn-outline-danger">logout</button>
+
+    </div>
+    <!-----------------------------------------------------------------------------/LOGOUT/--------------------------------------------------------------------->
+  </div>
+  <!-----------------------------------------------------------------------------/NAVGATION/--------------------------------------------------------------------->
+
+
+  <!-----------------------------------------------------------------------------popop-CREAT THE NEW POST-------------------------------------------------------------------->
+  <div class="pop-creat bg-primary-subtle p-3 rounded" style="top:0px;display:none; position: fixed;z-index: 9999;">
+    <div class="icons d-flex justify-content-between ">
+      <h2>CREAT</h2>
+      <i class="fa-solid fa-xmark close" style="font-size:20px;font-weight:bold;"></i>
+    </div>
+    <hr>
+    <p>username</p>
+    <input type="email" id="creat-body" style="border: 0" value="" />
+    <p>BODY</p>
+    <textarea id="creat-title" style="resize:none;height: 40px;"></textarea>
+    <label style="display:block;">imges</label>
+    <input type="file" id="creat-imges">
+    <div class="btn-pop text-end">
+      <button class="btn btn-info">close</button>
+      <button class="btn btn-info" onclick="creatThenewpost()">CREAT</button>
+    </div>
+    <!----------------------------------------------------------------------------/popop-CREAT THE NEW POST/-------------------------------------------------------------------->
+  </div>
+
+
+  <!-----------------------------------------------------------------------------POP-REGISTER--------------------------------------------------------------------->
+  <div class="poppop-2 bg-primary-subtle p-3 rounded" id="pop-register" style="display: none;">
+    <div class="icons d-flex justify-content-between ">
+      <h2>REGISTER</h2>
+      <i class="fa-solid fa-xmark close" style="font-size:20px;font-weight:bold;"></i>
+    </div>
+    <hr>
+    <p>name</p>
+    <input type="email" id="register-name" style="border: 0" />
+    <p>username</p>
+    <input type="email" id="register-username" style="border: 0" />
+    <p>password</p>
+    <input type="password" id="register-password" style="border: 0" />
+    <label style="display:block;">image</label>
+    <input type="file" id="register-image" style="display:block;">
+    <div class="btn-pop text-end">
+      <button class="btn btn-info">close</button>
+      <button class="btn btn-info" id='login-send' onclick="registerlogedclick()">REGISTER</button>
+    </div>
+  </div>
+  <!-----------------------------------------------------------------------------/POP-REGISTER/--------------------------------------------------------------------->
+
+
+  <!-----------------------------------------------------------------------------popop-LOGON--------------------------------------------------------------------->
+  <div class="poppop bg-primary-subtle p-3 rounded" id="pop-login">
+    <div class="icons d-flex justify-content-between ">
+      <h2>login</h2>
+      <i class="fa-solid fa-xmark close" style="font-size:20px;font-weight:bold;"></i>
+    </div>
+    <hr>
+    <p>username</p>
+    <input type="email" id="text-input" style="border: 0" value="yarob99" />
+    <p>password</p>
+    <input type="password" id="password-input" style="border: 0" value="123456" />
+    <div class="btn-pop text-end">
+      <button class="btn btn-info">close</button>
+      <button class="btn btn-info" id='login-send' onclick="clickbtnlogin()">login</button>
+    </div>
+  </div>
+  <!-----------------------------------------------------------------------------/popop-LOGIN/-------------------------------------------------------------------->
+
+
+  <!------------------------------------------------------------------------------CONTENT-POST--------------------------------------------------------------------->
+  <div class="post-content container col-8 mt-5"></div>
+  <!------------------------------------------------------------------------------/CONTENT-POST/------------------------------------------------------------------->
+
+
+  <!------------------------------------------------------------------------------CREAT-NEW-POST------------------------------------------------------------------->
+  <div class="new-creat-post"style="position:fixed;bottom:10%;right:3%;background-color:blue;border-radius:50%;height:50px;width:50px;text-align:center;color:white;font-size:30px;cursor: pointer;font-weight:bold" onclick="creatnewpost()">+</div>
+  <!------------------------------------------------------------------------------/CREAT-NEW-POST/------------------------------------------------------------------->
+
+
+
+  <!------------------------------------------------------------------------------SHOWALEART----------------------------------------------------------------- -->
+  <div id="liveAlertPlaceholder"style=" position: fixed;bottom:40%;right:5%;height:30px;z-index: 999;"></div>
+  <!------------------------------------------------------------------------------/SHOWALEART/----------------------------------------------------------------- -->
+</body>
+
+<script src="./main.js"></script>
+<script>
+ 
+  // <===============================GETPOST================================================>
+  function posts() {
+    let api = 'https://tarmeezacademy.com/api/v1/tags/1/posts'
+    fetch(api)
+      .then(res => res.json())
+      .then(data => getposts(data))
+  }
+  posts()
+
+  function getposts(data) {
+
+    let resolve = data.data
+    resolve.forEach(element => {
+      postcontent.innerHTML += `
+    <div class="post pt-2 border px-2" id="new-post"style="cursor:pointer;" onclick="creatnewtao(${element.id})" >
+    <div class="img-post">
+      <img src="${element.author.profile_image}" alt="" id="imge" class="rounded-circle ">
+      <span id="post-span">${element.author.name}</span>
+    </div>
+    <hr>
+    <img src="${element.image}" alt="" class="imge">
+    <p>${element.created_at}</p>
+    <p>Hellow world</p>
+    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eius dignissimos doloribus vero, nam ipsam debitis
+      veniam iste </p>
+    <hr>
+    <i class="fa fa-pencil" aria-hidden="true"></i>
+    <span>(${element.comments_count})comments</span>
+   <span id="post-tag-${element.id}"></span>
+    `
+      let currentpost = `post-tag-${element.id}`
+
+      for (taged of element.tags) {
+        let contenttag = `
+
+<button class="btn btn-sm rounded-5"style="background-color:gray;">${taged.name}</button>
+`
+        document.getElementById(currentpost).innerHTML += contenttag
+      }
+
+
+
+    })
+
+  }
+
+function creatnewtao(id){
+
+  window.location=`index2.html?postid=${id} `
+
+}
+  //<===============================/GETPOST/===============================================>
+
+
+
+  //<===============================CREAT-NEW-POST==========================================>
+  function creatnewpost() {
+    let popcreat = document.querySelector('.pop-creat')
+    popcreat.style.display = 'block'
+
+
+  }
+  
+  function creatThenewpost() {
+    let body = document.getElementById('creat-body').value
+    let title = document.getElementById('creat-title').value
+    let imges = document.getElementById('creat-imges').files[0]
+    let token = localStorage.getItem('token')
+
+
+    let params = new FormData()
+    params.append('body', body)
+    params.append('title', title)
+    params.append('image', imges)
+
+    let header = {
+      "content-Type": "multipart/form-data",
+      "Authorization": `Bearer ${token}`
+    }
+
+    axios.post("https://tarmeezacademy.com/api/v1/posts", params, {
+      headers: header
+    })
+
+      .then(res => {
+
+        let postcontent = document.querySelector('.post-content')
+        contentpost = `
+     
+      <p>${res.data.data.body}<p>
+      <p>${res.data.data.title}<p>
+      <img src="${res.data.data.image}">
+    
+    `
+        let popcreat = document.querySelector('.pop-creat')
+        popcreat.style.display = 'none'
+
+        postcontent.innerHTML += contentpost
+
+        showsuccesaleart('you scusses creat the new post', 'success')
+      }).catch(err => {
+        error = err.response.data.message
+        showsuccesaleart(error, 'danger')
+      })
+  }
+//<===============================/CREAT-NEW-POST/========================================>
+
+
+
+//<===============================SETUPUI========================================>
+function setui(){
+  let buttonlogin=document.querySelector('.button-login')
+  let tokens=localStorage.getItem('token')
+
+  let user=localStorage.getItem('user')     //OBJECT
+  let stor=JSON.parse(user)
+
+  let newcreatpost=document.querySelector('.new-creat-post')
+  let title=document.getElementById('title')
+
+
+  
+  if(tokens==null){   // NO SIGNIN NO TOKEV
+    buttonlogin.style.display='block'
+    logoutbtn.style.display='none'
+    newcreatpost.style.display='none'
+  
+  }else{              // YES SIGNIN YES TOKEV
+    logoutbtn.style.display='block'
+    buttonlogin.style.display='none'
+    newcreatpost.style.display='block'
+    title.innerHTML=stor.username
+  
+
+  }
+}
+setui()
+//<===============================/SETUPUI/========================================>
+
+
+
+</script>
+
+</html>
